@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Name</title>
+    <style>
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #163832; /* Background color */
+            color: #8eb69b; /* Text color for headings */
+            font-family: 'Great Vibes', cursive;
+            position: relative; /* For positioning of images */
+            overflow: hidden; /* Prevent scrolling */
+        }
+        .container {
+            text-align: center;
+            z-index: 10; /* Ensure text is above sunflowers */
+        }
+        input {
+            padding: 10px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            border: 2px solid #8eb69b; /* Border color */
+            color: #163832; /* Text color inside input */
+            background-color: #daf1de; /* Input field background color */
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 2px solid #8eb69b; /* Border color */
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #daf1de; /* Button background color when not pressed */
+            color: #163832; /* Text color inside buttons */
+            font-family: 'Dancing Script', cursive;
+            transition: color 0.3s, background-color 0.3s; /* Smooth transition for color change */
+        }
+        button:hover {
+            background-color: #8eb69b; /* Change background color on hover */
+            color: #163832; /* Change text color on hover */
+        }
+        button:active {
+            background-color: #8eb69b; /* Change button background color when pressed */
+            color: #163832; /* Change text color when pressed */
+        }
+        h1 {
+            color: white; /* Change heading text color to white */
+        }
+        .sunflower {
+            position: absolute; /* Positioning for random placement */
+            width: 100px; /* Size of sunflower images */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: transform 0.2s ease; /* Smooth transformation */
+        }
+        .sunflower:hover {
+            transform: scale(1.1); /* Slightly scale up on hover */
+        }
+        .pop {
+            animation: pop 0.2s forwards; /* Animation for popping effect */
+        }
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5); /* Scale up to 1.5 */
+            }
+            100% {
+                transform: scale(1); /* Return to original size */
+            }
+        }
+        .pedro {
+            width: 150px; /* Size of Pedro images */
+        }
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+            justify-content: center; /* Center modal contents */
+            align-items: center; /* Center modal contents */
+        }
+        .modal-content {
+            position: relative;
+            width: 80%; /* Width of video */
+            max-width: 600px; /* Max width of video */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Aké je tvoje meno?</h1> <!-- Updated heading text -->
+        <input type="text" id="name-input" placeholder="Enter your name" required>
+        <button id="submit-btn">OK</button> <!-- Updated button text -->
+    </div>
+
+    <!-- Modal for video -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <video id="pedroVideo" width="100%" controls>
+                <source src="PedroVideo1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        const numberOfSunflowers = 30; // Number of sunflowers to display
+        const sunflowerSize = 100; // Size of sunflower images
+
+        const sunflowers = []; // Array to keep track of sunflower positions
+        let clickedSunflowers = 0; // Count of clicked sunflowers
+
+        // Function to check if a position collides with text, buttons, or other sunflowers
+        function isColliding(newX, newY) {
+            const inputRect = document.getElementById('name-input').getBoundingClientRect();
+            if (newX < inputRect.right && newX + sunflowerSize > inputRect.left &&
+                newY < inputRect.bottom && newY + sunflowerSize > inputRect.top) {
+                return true; // Collision with input field
+            }
+
+            const buttonRect = document.getElementById('submit-btn').getBoundingClientRect();
+            if (newX < buttonRect.right && newX + sunflowerSize > buttonRect.left &&
+                newY < buttonRect.bottom && newY + sunflowerSize > buttonRect.top) {
+                return true; // Collision with button
+            }
+
+            const headingRect = document.querySelector('h1').getBoundingClientRect();
+            if (newX < headingRect.right && newX + sunflowerSize > headingRect.left &&
+                newY < headingRect.bottom && newY + sunflowerSize > headingRect.top) {
+                return true; // Collision with heading
+            }
+
+            for (const sunflower of sunflowers) {
+                const distance = Math.sqrt((sunflower.x - newX) ** 2 + (sunflower.y - newY) ** 2);
+                if (distance < sunflowerSize) {
+                    return true; // Collision detected
+                }
+            }
+
+            return false; // No collision
+        }
+
+        // Function to place sunflowers randomly in the viewport
+        function placeSunflowers() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            for (let i = 0; i < numberOfSunflowers; i++) {
+                const img = document.createElement('img');
+                img.src = 'Sunflower.png'; // Path to the sunflower image
+                img.alt = 'Sunflower';
+                img.classList.add('sunflower');
+
+                let randomX, randomY;
+                do {
+                    randomX = Math.random() * (width - sunflowerSize);
+                    randomY = Math.random() * (height - sunflowerSize);
+                } while (isColliding(randomX, randomY));
+
+                img.style.left = `${randomX}px`;
+                img.style.top = `${randomY}px`;
+
+                // Add click event for sunflower
+                img.addEventListener('click', function handleClick() {
+                    if (img.src.includes('Pedro2.png')) {
+                        return; // Do nothing if it's already Pedro
+                    }
+
+                    img.classList.add('pop'); // Add pop animation class
+                    setTimeout(() => {
+                        img.src = 'Pedro2.png'; // Change the image to Pedro2
+                        img.classList.remove('pop'); // Remove the pop class after the animation
+                        img.classList.add('pedro'); // Add the Pedro class to enlarge
+                        clickedSunflowers++; // Increment clicked sunflower count
+
+                        // Check if all sunflowers have been clicked
+                        if (clickedSunflowers === numberOfSunflowers) {
+                            document.getElementById('videoModal').style.display = 'flex'; // Show modal
+                            document.getElementById('pedroVideo').play(); // Play video
+                        }
+                    }, 200); // Time matches the pop animation duration
+                });
+
+                sunflowers.push({ x: randomX, y: randomY }); // Save position to array
+                document.body.appendChild(img); // Add the sunflower image to the body
+            }
+        }
+
+        // Initialize sunflower placement on window load
+        window.onload = placeSunflowers;
+
+        // Close modal when clicking outside of the modal content
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('videoModal');
+            if (event.target === modal) {
+                modal.style.display = 'none'; // Hide modal
+                document.getElementById('pedroVideo').pause(); // Pause video
+                document.getElementById('pedroVideo').currentTime = 0; // Reset video to start
+            }
+        });
+
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            const name = document.getElementById('name-input').value;
+            if (name) {
+                localStorage.setItem('userName', name); // Save name
+                window.location.href = 'question.html'; // Redirect to the question page
+            }
+        });
+    </script>
+</body>
+</html>

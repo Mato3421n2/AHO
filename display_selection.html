@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-scale=1.0">
+    <title>Selected Options</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #163832;
+            color: white;
+            font-family: 'Great Vibes', cursive;
+            position: relative; /* Allows positioning of absolute elements */
+        }
+        .container {
+            text-align: center;
+            position: relative; /* Make the container relative for positioning */
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .selection {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        /* Popup modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #daf1de; /* Same as button background */
+            color: #163832; /* Same as button text */
+            padding: 20px;
+            border: 2px solid #8eb69b; /* Same border as button */
+            border-radius: 10px;
+            text-align: center;
+            font-size: 2rem;
+        }
+        .hidden-clickable {
+            cursor: pointer;
+            color: inherit; /* Match the surrounding text color */
+        }
+        .gif {
+            position: absolute;
+            left: -600px;
+            top: -400px;
+            width: 600px;
+        }
+        .gif2 {
+            position: fixed;
+            width: 150px;
+            left: 70%;
+            top: 20%;
+        }
+        .gif3 {
+            position: fixed;
+            width: 150px;
+            right: 10%;
+            bottom: 10%;
+        }
+        .gif4 {
+            position: fixed;
+            width: 150px;
+            left: 30%;
+            bottom: 30%;
+        }
+        .gif5 {
+            position: fixed;
+            width: 150px;
+            left: 55%;
+            top: 70%;
+        }
+        .gif6 {
+            position: fixed;
+            width: 150px;
+            left: 45%;
+            top: 15%;
+        }
+        .fox-gif {
+            position: fixed; /* Fixed position for Fox gif */
+            width: 150px; /* Size of the Fox GIF */
+            right: 5%; /* New position for Fox.gif */
+            top: 50%; /* New position for Fox.gif */
+        }
+        .pedro-slap-gif {
+            position: fixed; /* Fixed position for PedroSlap gif */
+            width: 150px; /* Size of PedroSlap GIF */
+            left: 22.5%; /* Moved further right by 1.5 times */
+            top: 10%; /* Closer to the top */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="PedroDance.gif" alt="Pedro Dance" class="gif"> <!-- First GIF on the left side -->
+        <h1 id="userSelection"></h1>
+        <div class="selection"><span class="hidden-clickable" id="clickKam">Kam ?</span>: <span id="displayChosenOption"></span></div>
+        <div class="selection">Jedlo ?: <span id="displayFoodOption"></span></div>
+        <div class="selection">Kedy ?: <span id="displaySelectedDay"></span></div>
+    </div>
+
+    <!-- Modal Popup -->
+    <div id="popupModal" class="modal">
+        <div class="modal-content">haha, cum</div>
+    </div>
+
+    <!-- Additional GIFs -->
+    <img src="PedroDance2.gif" alt="Pedro Dance 2" class="gif2">
+    <img src="PedroDance3.gif" alt="Pedro Dance 3" class="gif3">
+    <img src="PedroDance4.gif" alt="Pedro Dance 4" class="gif4">
+    <img src="PedroHeart.gif" alt="Pedro Heart" class="gif5">
+    <img src="PedroEating.gif" alt="Pedro Eating" class="gif6">
+    <img src="Fox.gif" alt="Fox" class="fox-gif"> <!-- Fox GIF added -->
+    <img src="PedroSlap.gif" alt="Pedro Slap" class="pedro-slap-gif"> <!-- Pedro Slap GIF added -->
+
+    <script>
+        // Get stored data from local storage
+        const name = localStorage.getItem('userName'); // From name.html
+        const chosenOption = localStorage.getItem('chosenOption'); // From options.html
+        const foodOption = localStorage.getItem('selectedFoodOption'); // From chosen_option.html
+        const selectedDay = localStorage.getItem('selectedDay'); // From new_options.html
+
+        // Display the retrieved values
+        document.getElementById('userSelection').textContent = `${name || 'N/A'}, toto je tvoj výber`;
+        document.getElementById('displayChosenOption').textContent = chosenOption || 'N/A';
+        document.getElementById('displayFoodOption').textContent = foodOption || 'N/A';
+        document.getElementById('displaySelectedDay').textContent = selectedDay || 'N/A';
+
+        // Add click event to "Kam ?"
+        document.getElementById('clickKam').onclick = function() {
+            const popupModal = document.getElementById('popupModal');
+            popupModal.style.display = 'flex'; // Show popup
+            setTimeout(() => {
+                popupModal.style.display = 'none'; // Hide after 2 seconds
+            }, 2000);
+        };
+    </script>
+</body>
+</html>

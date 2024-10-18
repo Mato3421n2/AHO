@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Čo chceš papať?</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #163832;
+            color: white;
+            font-family: 'Great Vibes', cursive;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 30px;
+        }
+        .image-placeholder {
+            background-color: #f2d0a4;
+            height: 250px;
+            width: 250px;
+            margin-bottom: 5px;
+            border: 4px solid #8eb69b;
+            border-radius: 10px;
+        }
+        .option-title {
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 2px solid #8eb69b;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #daf1de;
+            color: #163832;
+            margin-top: 10px;
+            transition: color 0.3s, background-color 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #8eb69b;
+            color: #163832;
+        }
+        /* Popup styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #daf1de;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            font-size: 1.5rem;
+            color: #163832;
+            z-index: 1000;
+        }
+        .popup button {
+            margin-top: 10px;
+        }
+        .popup img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            display: block; /* Ensure it's a block element */
+            margin-left: auto; /* Center horizontally */
+            margin-right: auto; /* Center horizontally */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Čo chceš papať?</h1>
+        <div class="options">
+            <div class="option">
+                <div class="option-title">McDonald's</div>
+                <img src="Mc.png" alt="McDonald's" class="image-placeholder">
+                <button onclick="selectOption('McDonald\'s')">Choose McDonald's</button>
+            </div>
+            <div class="option">
+                <div class="option-title">KFC</div>
+                <img src="Kfc.png" alt="KFC" class="image-placeholder">
+                <button onclick="selectOption('KFC')">Choose KFC</button>
+            </div>
+            <div class="option">
+                <div class="option-title">Neviem</div>
+                <img src="Shrug.png" alt="Shrug" class="image-placeholder">
+                <button onclick="showPopup('???? vážne ty guma ????')">Choose Neviem</button>
+            </div>
+            <div class="option">
+                <div class="option-title">Anything</div>
+                <img src="Anything.png" alt="Anything" class="image-placeholder">
+                <button onclick="selectOption('Anything')">Choose Anything</button>
+            </div>
+            <div class="option">
+                <div class="option-title">Srdiečka na Smotane</div>
+                <img src="Srdiecka.png" alt="Srdiečka" class="image-placeholder">
+                <button onclick="showPopup('?? čo to mám akože uvariť ? dumbass', true)">Vyber Srdiečka na Smotane</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup -->
+    <div id="popup" class="popup">
+        <span id="popup-message">Your message here</span>
+        <img id="popup-image" src="" alt="Pedro Middle" style="display:none; margin-top: 10px;"> <!-- Image added under text -->
+        <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+        function selectOption(option) {
+            // Store selected option in localStorage
+            localStorage.setItem('selectedFoodOption', option);
+
+            // Redirect to new options page for selected options
+            if (option === 'McDonald\'s' || option === 'KFC' || option === 'Anything') {
+                window.location.href = 'new_options.html'; // Redirect to new options page
+            }
+        }
+
+        // Show the popup with a custom message
+        function showPopup(message, isSrdiecka) {
+            document.getElementById('popup-message').textContent = message;
+
+            if (isSrdiecka) {
+                document.getElementById('popup-image').src = 'PedroMiddle.png'; // Set image source
+                document.getElementById('popup-image').style.display = 'block'; // Show the image
+            } else {
+                document.getElementById('popup-image').style.display = 'none'; // Hide the image for other popups
+            }
+
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Close the popup
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

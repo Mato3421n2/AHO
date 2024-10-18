@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kedy?</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #163832;
+            color: white;
+            font-family: 'Great Vibes', cursive;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 30px;
+        }
+        .option-title {
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 2px solid #8eb69b;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #daf1de;
+            color: #163832;
+            margin-top: 10px;
+            transition: color 0.3s, background-color 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #8eb69b;
+            color: #163832;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kedy?</h1> <!-- Updated heading -->
+        <div class="options">
+            <div class="option">
+                <div class="option-title">Piatok</div> <!-- Updated option title -->
+                <button onclick="chooseDay('Piatok')">Vyber Piatok</button>
+            </div>
+            <div class="option">
+                <div class="option-title">Sobota</div> <!-- Updated option title -->
+                <button onclick="chooseDay('Sobota')">Vyber Sobota</button>
+            </div>
+            <div class="option">
+                <div class="option-title">Nedeľa</div> <!-- Updated option title -->
+                <button onclick="chooseDay('Nedeľa')">Vyber Nedeľa</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function chooseDay(day) {
+            // Store the selected day in localStorage
+            localStorage.setItem('selectedDay', day);
+
+            // Redirect to the display page where selections will be shown
+            window.location.href = 'display_selection.html'; // Change this to your desired page
+        }
+    </script>
+</body>
+</html>

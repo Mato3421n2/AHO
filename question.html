@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #163832;
+            color: white;
+            font-family: 'Great Vibes', cursive;
+            overflow: hidden; /* Prevents scrolling */
+            position: relative; /* Allows positioning of children */
+        }
+        .container {
+            text-align: center;
+            z-index: 1; /* Ensure content is above falling sunflowers */
+        }
+        h1 {
+            margin-bottom: 40px;
+            font-size: 3rem;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            position: relative; /* Enable relative positioning for buttons */
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border: 2px solid #8eb69b;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #daf1de;
+            color: #163832;
+            margin: 0 15px;
+            transition: color 0.3s, background-color 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #8eb69b;
+            color: #163832;
+        }
+        .sunflower {
+            position: absolute;
+            width: 80px; /* Size of sunflowers */
+            animation: fall linear forwards; /* Animate falling */
+            opacity: 1; /* Start visible */
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0); /* Start at the top */
+                opacity: 1; /* Fully visible */
+            }
+            100% {
+                transform: translateY(100vh); /* Move to the bottom */
+                opacity: 0; /* Fade out */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="question-text"></h1>
+        <div class="button-container">
+            <button id="no-btn">Nie</button> <!-- Changed to "Nie" -->
+            <button id="yes-btn" onclick="redirectToOptions()">Áno</button> <!-- Changed to "Áno" -->
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+
+        // Move No button to a random position on hover
+        noBtn.addEventListener('mouseover', function() {
+            const buttonWidth = noBtn.offsetWidth;
+            const buttonHeight = noBtn.offsetHeight;
+
+            // Calculate random positions ensuring the button stays within the viewport
+            const x = Math.random() * (window.innerWidth - buttonWidth);
+            const y = Math.random() * (window.innerHeight - buttonHeight - 100); // Leave some space from the top
+
+            noBtn.style.position = 'fixed'; // Set position to fixed for movement relative to the viewport
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        });
+
+        // Redirect to options.html on Yes button click
+        function redirectToOptions() {
+            window.location.href = 'options.html';
+        }
+
+        // Get the remembered name from local storage and update the question text
+        const name = localStorage.getItem('userName') || 'drahý užívateľ';
+        document.getElementById('question-text').textContent = `${name}, chceš ísť so mnou niekam ?`;
+
+        // Function to create falling sunflowers
+        function createSunflower() {
+            const sunflower = document.createElement('img');
+            sunflower.src = 'Sunflower.png'; // Your sunflower image path
+            sunflower.className = 'sunflower';
+
+            // Set random horizontal position across the entire width
+            sunflower.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+            sunflower.style.animationDuration = (Math.random() * 3 + 2) + 's'; // Randomize fall duration between 2s and 5s
+
+            // Start from the very top of the screen
+            sunflower.style.top = '-80px'; // Position it above the screen
+
+            document.body.appendChild(sunflower);
+
+            // Remove the sunflower after falling animation
+            sunflower.addEventListener('animationend', () => {
+                sunflower.remove();
+            });
+        }
+
+        // Create multiple sunflowers at once for a fuller effect
+        function dropMultipleSunflowers() {
+            const count = Math.floor(Math.random() * 5) + 3; // Random number of sunflowers between 3 and 7
+            for (let i = 0; i < count; i++) {
+                createSunflower();
+            }
+        }
+
+        // Create sunflowers at shorter intervals for more frequent drops
+        setInterval(dropMultipleSunflowers, 500); // Create multiple sunflowers every 500ms
+    </script>
+</body>
+</html>
